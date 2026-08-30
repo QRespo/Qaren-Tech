@@ -1,59 +1,278 @@
+:root {
+  --bg: #12141c;
+  --surface: #1c1f2b;
+  --surface-2: #242838;
+  --amber: #ffb100;
+  --teal: #00d9c0;
+  --text: #f5f6fa;
+  --text-muted: #8a8fa3;
+  --border: #2c3040;
+}
+
+* { box-sizing: border-box; }
+
 body {
-  font-family: Arial, sans-serif;
-  background-color: #4a4848;
   margin: 0;
-  padding: 40px 20px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Tajawal', sans-serif;
 }
 
-.site-title {
-  text-align: center;
-  color: white;
-  font-size: 32px;
-  margin-bottom: 4px;
+h1, h2, .logo {
+  font-family: 'Cairo', sans-serif;
 }
 
-.site-subtitle {
-  text-align: center;
-  color: #cbd5e1;
-  margin-bottom: 32px;
-}
-
-.products {
+/* الشريط العلوي */
+.topbar {
   display: flex;
-  justify-content: center;
-  align-items: stretch;
-  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 20px 32px;
+  border-bottom: 1px solid var(--border);
   flex-wrap: wrap;
 }
 
-.card {
-  background-color: #d6d7d8;
-  border-radius: 16px;
-  padding: 24px;
-  width: 280px;
-  text-align: center;
-  color: rgb(11, 10, 10);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+.logo {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text);
 }
 
-.card img {
-  width: 180px;
-  border-radius: 8px;
+.logo span {
+  color: var(--amber);
+}
+
+.search-wrap {
+  flex: 1;
+  max-width: 420px;
+}
+
+.search-wrap input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-family: 'Tajawal', sans-serif;
+  font-size: 15px;
+}
+
+.search-wrap input:focus {
+  outline: 2px solid var(--amber);
+  outline-offset: 1px;
+}
+
+.search-wrap input::placeholder {
+  color: var(--text-muted);
+}
+
+/* قسم الهيرو */
+.hero {
+  text-align: center;
+  padding: 48px 20px 32px;
+}
+
+.hero h1 {
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 8px;
+}
+
+.hero p {
+  color: var(--text-muted);
+  font-size: 16px;
+  margin: 0;
+}
+
+/* شرائح الفئات */
+.categories {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 0 20px 32px;
+}
+
+.chip {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-family: 'Tajawal', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.chip:hover {
+  border-color: var(--amber);
+  color: var(--text);
+}
+
+.chip.active {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: #1a1200;
+  font-weight: 700;
+}
+
+/* شبكة المنتجات */
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  padding: 0 32px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-image {
+  position: relative;
+  background: #0a0b10;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 180px;
+}
+
+.card-image img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.badge-lowest {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--amber);
+  color: #1a1200;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 999px;
+}
+
+.card-body {
+  padding: 18px 20px 22px;
+}
+
+.category-tag {
+  font-size: 12px;
+  color: var(--teal);
+  font-weight: 700;
 }
 
 .card h2 {
-  margin: 16px 0 4px;
-  font-size: 20px;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 6px 0 16px;
 }
 
-.price {
-  font-size: 24px;
-  font-weight: bold;
-  color: #0e0e0e;
-  margin: 8px 0;
+/* سلم الأسعار — العنصر المميز */
+.price-ladder {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.store {
-  font-size: 14px;
-  color: #191a1b;
+.ladder-row {
+  display: grid;
+  grid-template-columns: 70px 1fr 70px;
+  align-items: center;
+  gap: 10px;
+}
+
+.store-name {
+  font-size: 13px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.ladder-row.cheapest .store-name {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.tag-cheapest {
+  font-size: 10px;
+  background: var(--teal);
+  color: #002420;
+  padding: 2px 6px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.bar-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--border);
+}
+
+.ladder-row.cheapest .bar-fill {
+  background: var(--amber);
+}
+
+.store-price {
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+  direction: ltr;
+}
+
+.ladder-row.cheapest .store-price {
+  color: var(--amber);
+}
+
+/* حالة عدم وجود نتائج */
+.empty-state {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 40px 0;
+}
+
+/* الفوتر */
+.site-footer {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+  padding: 24px 0 40px;
+  border-top: 1px solid var(--border);
+}
+
+/* الجوال */
+@media (max-width: 600px) {
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .hero h1 {
+    font-size: 24px;
+  }
+  .products {
+    padding: 0 16px 32px;
+  }
 }

@@ -2,24 +2,111 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <title>قارن تك</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>قارن تك — قارن قبل ما تشتري</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-  <h1 class="site-title">قارن تك</h1>
-  <p class="site-subtitle">قارن أسعار أجهزة القيمنق قبل ما تشتري</p>
+  <header class="topbar">
+    <div class="logo">قارن<span>تك</span></div>
+    <div class="search-wrap">
+      <input id="searchInput" type="text" placeholder="ابحث عن منتج... مثلاً بلايستيشن 5" />
+    </div>
+  </header>
 
-  <div class="products">
+  <section class="hero">
+    <h1>قارن السعر قبل لا تشتري</h1>
+    <p>أسعار أجهزة وملحقات القيمنق من أكثر من متجر سعودي، في مكان واحد.</p>
+  </section>
+
+  <nav class="categories">
+    <button class="chip active" data-category="all">الكل</button>
+    {% for c in categories %}
+    <button class="chip" data-category="{{ c }}">{{ c }}</button>
+    {% endfor %}
+  </nav>
+
+  <div class="products" id="productsGrid">
     {% for p in products %}
-    <div class="card">
-      <img src="{{ p['image_url'] }}" alt="{{ p['name'] }}">
-      <h2>{{ p['name'] }}</h2>
-      <div class="price">{{ "{:,.0f}".format(p['price']) }} ريال</div>
-      <div class="store">أقل سعر متوفر حاليًا - {{ p['store'] }}</div>
+    <div class="card" data-name="{{ p['name'] }}" data-category="{{ p['category'] }}">
+      <div class="card-image">
+        <img src="{{ p['image_url'] }}" alt="{{ p['name'] }}">
+        {% if p['lowest_price'] %}
+        <span class="badge-lowest">أرخص سعر {{ "{:,.0f}".format(p['lowest_price']) }} ريال</span>
+        {% endif %}
+      </div>
+
+      <div class="card-body">
+        <span class="category-tag">{{ p['category'] }}</span>
+        <h2>{{ p['name'] }}</h2>
+
+        <div class="price-ladder">
+          {% for o in p['offers'] %}
+          <div class="ladder-row {% if o['is_cheapest'] %}cheapest{% endif %}">
+            <div class="store-name">
+              {{ o['store'] }}
+              {% if o['is_cheapest'] %}<span class="tag-cheapest">الأرخص</span>{% endif %}
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width: {{ o['bar_width'] }}%;"></div>
+            </div>
+            <div class="store-price">{{ "{:,.0f}".format(o['price']) }} ريال</div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
     </div>
     {% endfor %}
   </div>
+
+  <p class="empty-state" id="emptyState" style="display:none;">ما لقينا منتج بهذا الاسم</p>
+
+  <footer class="site-footer">
+    قارن تك — موقع مقارنة أسعار أجهزة وملحقات القيمنق في السعودية
+  </footer>
+
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const chips = document.querySelectorAll('.chip');
+    const cards = document.querySelectorAll('.card');
+    const emptyState = document.getElementById('emptyState');
+    let activeCategory = 'all';
+
+    function applyFilters() {
+      const query = searchInput.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const name = card.dataset.name.toLowerCase();
+        const category = card.dataset.category;
+        const matchesSearch = name.includes(query);
+        const matchesCategory = activeCategory === 'all' || category === activeCategory;
+
+        if (matchesSearch && matchesCategory) {
+          card.style.display = '';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    searchInput.addEventListener('input', applyFilters);
+
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        activeCategory = chip.dataset.category;
+        applyFilters();
+      });
+    });
+  </script>
 
 </body>
 </html>
