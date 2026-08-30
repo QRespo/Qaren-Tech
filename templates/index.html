@@ -45,7 +45,7 @@
 
         <div class="price-ladder">
           {% for o in p['offers'] %}
-          <div class="ladder-row {% if o['is_cheapest'] %}cheapest{% endif %}">
+          <a class="ladder-row {% if o['is_cheapest'] %}cheapest{% endif %}" href="{{ o['product_url'] }}" target="_blank" rel="sponsored noopener">
             <div class="store-name">
               {{ o['store'] }}
               {% if o['is_cheapest'] %}<span class="tag-cheapest">الأرخص</span>{% endif %}
@@ -54,7 +54,7 @@
               <div class="bar-fill" style="width: {{ o['bar_width'] }}%;"></div>
             </div>
             <div class="store-price">{{ "{:,.0f}".format(o['price']) }} ريال</div>
-          </div>
+          </a>
           {% endfor %}
         </div>
       </div>

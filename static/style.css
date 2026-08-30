@@ -194,6 +194,17 @@ h1, h2, .logo {
   grid-template-columns: 70px 1fr 70px;
   align-items: center;
   gap: 10px;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 4px 6px;
+  margin: -4px -6px;
+  transition: background 0.15s ease;
+}
+
+.ladder-row:hover {
+  background: var(--surface-2);
 }
 
 .store-name {

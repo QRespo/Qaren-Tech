@@ -19,8 +19,9 @@ def get_products_with_offers():
         offers = [dict(o) for o in offers]
         if offers:
             max_price = max(o['price'] for o in offers)
+            multiple_offers = len(offers) > 1
             for i, o in enumerate(offers):
-                o['is_cheapest'] = (i == 0)
+                o['is_cheapest'] = (i == 0) and multiple_offers
                 # نسبة طول الشريط مقارنة بأغلى سعر، بحد أدنى 35% عشان الشريط يبان دايمًا
                 o['bar_width'] = max(35, round((o['price'] / max_price) * 100))
 
@@ -31,6 +32,7 @@ def get_products_with_offers():
             'image_url': product['image_url'],
             'offers': offers,
             'lowest_price': offers[0]['price'] if offers else None,
+            'multiple_offers': len(offers) > 1,
         })
 
     conn.close()
