@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>قارن تك</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <h1 class="site-title">قارن تك</h1>
+  <p class="site-subtitle">قارن أسعار أجهزة القيمنق قبل ما تشتري</p>
+
+  <div class="products">
+    {% for p in products %}
+    <div class="card">
+      <img src="{{ p['image_url'] }}" alt="{{ p['name'] }}">
+      <h2>{{ p['name'] }}</h2>
+      <div class="price">{{ "{:,.0f}".format(p['price']) }} ريال</div>
+      <div class="store">أقل سعر متوفر حاليًا - {{ p['store'] }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+</body>
+</html>
