@@ -1,2 +1,8 @@
 flask
 gunicorn
+openpyxl
+python-aliexpress-api
+requests
+beautifulsoup4
+python-dotenv
+curl_cffi

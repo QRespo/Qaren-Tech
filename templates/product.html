@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ product['name'] }} — قارن تك</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="{{ url_for('index') }}" class="logo">قارن<span>تك</span></a>
+    <div class="search-wrap">
+      <input id="searchInputTop" type="text" placeholder="ابحث عن منتج... مثلاً بلايستيشن 5" />
+    </div>
+  </header>
+
+  <div class="product-page">
+
+    <a href="{{ url_for('index') }}" class="back-link">→ رجوع لكل المنتجات</a>
+
+    <div class="product-hero">
+      <div class="product-hero-image">
+        <img src="{{ product['image_url'] }}" alt="{{ product['name'] }}">
+      </div>
+
+      <div class="product-hero-info">
+        <span class="category-tag">{{ product['category'] }}</span>
+        <h1>{{ product['name'] }}</h1>
+
+        {% if product['description'] %}
+        <p class="product-description">{{ product['description'] }}</p>
+        {% endif %}
+
+        {% if savings and savings > 0 %}
+        <div class="savings-badge">
+          توفر {{ "{:,.0f}".format(savings) }} ريال ({{ savings_percent }}%) لو اخترت الأرخص بدل الأغلى
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <h2 class="section-title">قارن السعر بين المتاجر</h2>
+
+    <div class="offer-cards">
+      {% for o in offers %}
+      {% if o['available'] %}
+      <a class="offer-card {% if o['rank'] == 1 %}rank-1{% elif o['rank'] == 2 %}rank-2{% elif o['rank'] == 3 %}rank-3{% endif %}" href="{{ o['product_url'] }}" target="_blank" rel="sponsored noopener">
+        {% if o['rank'] == 1 %}<span class="medal-badge medal-1">🏆 الأفضل سعرًا</span>
+        {% elif o['rank'] == 2 %}<span class="medal-badge medal-2">🥈 ثاني أفضل سعر</span>
+        {% elif o['rank'] == 3 %}<span class="medal-badge medal-3">🥉 ثالث أفضل سعر</span>
+        {% endif %}
+        <div class="offer-store">{{ o['store'] }}</div>
+        <div class="offer-price">{{ "{:,.0f}".format(o['price']) }} ريال</div>
+        <div class="offer-cta">اذهب للمتجر ←</div>
+      </a>
+      {% else %}
+      <div class="offer-card unavailable">
+        <div class="offer-store">{{ o['store'] }}</div>
+        <div class="offer-price unavailable-text">غير متاح حاليًا</div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="share-row">
+      <button class="share-btn" id="shareBtn">
+        🔗 شارك مقارنة السعر مع صديق
+      </button>
+    </div>
+
+    {% if related %}
+    <h2 class="section-title">منتجات مشابهة</h2>
+    <div class="related-grid">
+      {% for r in related %}
+      <a class="related-card" href="{{ url_for('product_detail', product_id=r['id']) }}">
+        <img src="{{ r['image_url'] }}" alt="{{ r['name'] }}">
+        <div class="related-name">{{ r['name'] }}</div>
+        {% if r['lowest_price'] %}
+        <div class="related-price">من {{ "{:,.0f}".format(r['lowest_price']) }} ريال</div>
+        {% endif %}
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+  </div>
+
+  <footer class="site-footer">
+    قارن تك — موقع مقارنة أسعار أجهزة وملحقات القيمنق في السعودية
+  </footer>
+
+  <script>
+    document.getElementById('shareBtn').addEventListener('click', function () {
+      navigator.clipboard.writeText(window.location.href).then(function () {
+        const btn = document.getElementById('shareBtn');
+        const original = btn.textContent;
+        btn.textContent = 'تم نسخ الرابط ✓ الصقه وشاركه مع من تحب';
+        setTimeout(function () { btn.textContent = original; }, 2500);
+      });
+    });
+
+    const topSearch = document.getElementById('searchInputTop');
+    topSearch.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && topSearch.value.trim()) {
+        window.location.href = "{{ url_for('index') }}?q=" + encodeURIComponent(topSearch.value.trim());
+      }
+    });
+  </script>
+
+</body>
+</html>

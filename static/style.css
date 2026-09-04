@@ -177,34 +177,64 @@ h1, h2, .logo {
 }
 
 .card h2 {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
-  margin: 6px 0 16px;
+  margin: 6px 0 14px;
+  min-height: 42px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* سلم الأسعار — العنصر المميز */
 .price-ladder {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
 }
 
 .ladder-row {
   display: grid;
-  grid-template-columns: 70px 1fr 70px;
+  grid-template-columns: 74px 1fr 60px;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   text-decoration: none;
   color: inherit;
   cursor: pointer;
-  border-radius: 8px;
-  padding: 4px 6px;
-  margin: -4px -6px;
+  border-radius: 6px;
+  padding: 3px 5px;
+  margin: -3px -5px;
   transition: background 0.15s ease;
+  font-size: 12px;
 }
 
 .ladder-row:hover {
   background: var(--surface-2);
+}
+
+.ladder-row.unavailable {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.ladder-row .store-name {
+  font-size: 10.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ladder-row .store-price {
+  font-size: 11.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.unavailable-text {
+  color: var(--text-muted) !important;
+  font-size: 10.5px !important;
 }
 
 .store-name {
@@ -231,7 +261,7 @@ h1, h2, .logo {
 }
 
 .bar-track {
-  height: 8px;
+  height: 6px;
   border-radius: 999px;
   background: var(--surface-2);
   overflow: hidden;
@@ -286,4 +316,384 @@ h1, h2, .logo {
   .products {
     padding: 0 16px 32px;
   }
+}
+
+/* ===== صفحة المنتج التفصيلية ===== */
+
+.logo {
+  text-decoration: none;
+}
+
+.card-image {
+  display: flex;
+  text-decoration: none;
+}
+
+.product-title-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 24px 32px 60px;
+}
+
+.back-link {
+  display: inline-block;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.back-link:hover {
+  color: var(--amber);
+}
+
+.product-hero {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 32px;
+  margin-bottom: 40px;
+}
+
+.product-hero-image {
+  background: #0a0b10;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  height: 280px;
+}
+
+.product-hero-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.product-hero-info h1 {
+  font-size: 26px;
+  margin: 10px 0 14px;
+}
+
+.product-description {
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.8;
+  margin: 0 0 18px;
+}
+
+.savings-badge {
+  display: inline-block;
+  background: rgba(0, 217, 192, 0.12);
+  border: 1px solid var(--teal);
+  color: var(--teal);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  margin-bottom: 18px;
+}
+
+.share-btn {
+  display: block;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'Tajawal', sans-serif;
+  font-size: 14px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.share-btn:hover {
+  border-color: var(--amber);
+}
+
+.section-title {
+  font-size: 20px;
+  margin: 32px 0 16px;
+}
+
+/* كروت الأسعار الكبيرة */
+.offer-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.offer-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px 18px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--text);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.offer-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--text-muted);
+}
+
+.offer-card.cheapest {
+  border-color: var(--amber);
+  background: rgba(255, 177, 0, 0.06);
+}
+
+.tag-cheapest-big {
+  position: absolute;
+  top: -10px;
+  right: 50%;
+  transform: translateX(50%);
+  background: var(--amber);
+  color: #1a1200;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.offer-store {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.offer-card.cheapest .offer-store {
+  color: var(--text);
+}
+
+.offer-price {
+  font-size: 24px;
+  font-weight: 800;
+  font-family: 'Cairo', sans-serif;
+  margin-bottom: 10px;
+}
+
+.offer-card.cheapest .offer-price {
+  color: var(--amber);
+}
+
+.offer-cta {
+  font-size: 13px;
+  color: var(--teal);
+}
+
+/* منتجات مشابهة */
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.related-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  text-decoration: none;
+  color: var(--text);
+  text-align: center;
+  transition: border-color 0.15s ease;
+}
+
+.related-card:hover {
+  border-color: var(--amber);
+}
+
+.related-card img {
+  width: 100%;
+  height: 100px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.related-name {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.related-price {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+@media (max-width: 700px) {
+  .product-hero {
+    grid-template-columns: 1fr;
+  }
+  .product-page {
+    padding: 20px 16px 40px;
+  }
+}
+
+/* شريط أكبر توفير بالصفحة الرئيسية */
+.best-deal-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  max-width: 700px;
+  margin: 0 auto 32px;
+  padding: 14px 24px;
+  background: linear-gradient(90deg, rgba(255,177,0,0.12), rgba(0,217,192,0.08));
+  border: 1px solid var(--amber);
+  border-radius: 999px;
+  text-decoration: none;
+  color: var(--text);
+  text-align: center;
+  transition: transform 0.15s ease;
+}
+
+.best-deal-strip:hover {
+  transform: translateY(-2px);
+}
+
+.best-deal-label {
+  font-weight: 800;
+  color: var(--amber);
+  font-size: 14px;
+}
+
+.best-deal-name {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.best-deal-amount {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--teal);
+}
+
+/* زر المشاركة بعد نقله تحت كروت الأسعار */
+.share-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+@media (max-width: 600px) {
+  .best-deal-strip {
+    border-radius: 16px;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+/* ===== نظام الميداليات (بلاتيني/ذهبي/برونزي) ===== */
+
+:root {
+  --platinum: #c9d6e3;
+  --gold: #ffd166;
+  --bronze: #cd9265;
+}
+
+/* كروت الأسعار الكبيرة بصفحة المنتج */
+.offer-card.rank-1 {
+  border-color: var(--platinum);
+  background: linear-gradient(180deg, rgba(201,214,227,0.10), rgba(201,214,227,0.02));
+  box-shadow: 0 0 0 1px rgba(201,214,227,0.25);
+}
+
+.offer-card.rank-2 {
+  border-color: var(--gold);
+  background: rgba(255,209,102,0.06);
+}
+
+.offer-card.rank-3 {
+  border-color: var(--bronze);
+  background: rgba(205,146,101,0.06);
+}
+
+.medal-badge {
+  position: absolute;
+  top: -12px;
+  right: 50%;
+  transform: translateX(50%);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.medal-1 {
+  background: var(--platinum);
+  color: #0f1420;
+}
+
+.medal-2 {
+  background: var(--gold);
+  color: #2b1d00;
+}
+
+.medal-3 {
+  background: var(--bronze);
+  color: #2b1400;
+}
+
+.offer-card.rank-1 .offer-price { color: var(--platinum); }
+.offer-card.rank-2 .offer-price { color: var(--gold); }
+.offer-card.rank-3 .offer-price { color: var(--bronze); }
+
+.offer-card.rank-1 .offer-store,
+.offer-card.rank-2 .offer-store,
+.offer-card.rank-3 .offer-store {
+  color: var(--text);
+}
+
+/* البطاقات المصغّرة بالصفحة الرئيسية */
+.ladder-row.rank-1 .bar-fill { background: var(--platinum); }
+.ladder-row.rank-2 .bar-fill { background: var(--gold); }
+.ladder-row.rank-3 .bar-fill { background: var(--bronze); }
+
+.ladder-row.rank-1 .store-price { color: var(--platinum); }
+.ladder-row.rank-2 .store-price { color: var(--gold); }
+.ladder-row.rank-3 .store-price { color: var(--bronze); }
+
+.ladder-row.rank-1 .store-name,
+.ladder-row.rank-2 .store-name,
+.ladder-row.rank-3 .store-name {
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* كروت "غير متاح حاليًا" بصفحة المنتج */
+.offer-card.unavailable {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.offer-card.unavailable .offer-store {
+  color: var(--text-muted);
+}
+
+/* رابط "متاجر أخرى" بالبطاقة الصغيرة */
+.more-stores-link {
+  display: block;
+  text-align: center;
+  font-size: 11px;
+  color: var(--teal);
+  text-decoration: none;
+  margin-top: 4px;
+  padding: 4px 0;
+}
+
+.more-stores-link:hover {
+  text-decoration: underline;
 }

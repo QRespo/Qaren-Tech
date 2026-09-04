@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>قارن تك — قارن قبل ما تشتري</title>
+  <meta name="mitgo-verification" content="2a4cf31f-deef-4581-9648-4616db029f80" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
@@ -22,6 +23,14 @@
     <p>أسعار أجهزة وملحقات القيمنق من أكثر من متجر سعودي، في مكان واحد.</p>
   </section>
 
+  {% if best_deal %}
+  <a class="best-deal-strip" href="{{ url_for('product_detail', product_id=best_deal['id']) }}">
+    <span class="best-deal-label">🔥 أكبر توفير الآن</span>
+    <span class="best-deal-name">{{ best_deal['name'] }}</span>
+    <span class="best-deal-amount">وفر {{ "{:,.0f}".format(best_savings) }} ريال ←</span>
+  </a>
+  {% endif %}
+
   <nav class="categories">
     <button class="chip active" data-category="all">الكل</button>
     {% for c in categories %}
@@ -32,23 +41,23 @@
   <div class="products" id="productsGrid">
     {% for p in products %}
     <div class="card" data-name="{{ p['name'] }}" data-category="{{ p['category'] }}">
-      <div class="card-image">
+      <a class="card-image" href="{{ url_for('product_detail', product_id=p['id']) }}">
         <img src="{{ p['image_url'] }}" alt="{{ p['name'] }}">
         {% if p['lowest_price'] %}
         <span class="badge-lowest">أرخص سعر {{ "{:,.0f}".format(p['lowest_price']) }} ريال</span>
         {% endif %}
-      </div>
+      </a>
 
       <div class="card-body">
         <span class="category-tag">{{ p['category'] }}</span>
-        <h2>{{ p['name'] }}</h2>
+        <a class="product-title-link" href="{{ url_for('product_detail', product_id=p['id']) }}"><h2>{{ p['name'] }}</h2></a>
 
         <div class="price-ladder">
           {% for o in p['offers'] %}
-          <a class="ladder-row {% if o['is_cheapest'] %}cheapest{% endif %}" href="{{ o['product_url'] }}" target="_blank" rel="sponsored noopener">
+          <a class="ladder-row {% if o['rank'] == 1 %}rank-1{% elif o['rank'] == 2 %}rank-2{% elif o['rank'] == 3 %}rank-3{% endif %}" href="{{ o['product_url'] }}" target="_blank" rel="sponsored noopener">
             <div class="store-name">
+              {% if o['rank'] == 1 %}🏆{% elif o['rank'] == 2 %}🥈{% elif o['rank'] == 3 %}🥉{% endif %}
               {{ o['store'] }}
-              {% if o['is_cheapest'] %}<span class="tag-cheapest">الأرخص</span>{% endif %}
             </div>
             <div class="bar-track">
               <div class="bar-fill" style="width: {{ o['bar_width'] }}%;"></div>
@@ -56,6 +65,11 @@
             <div class="store-price">{{ "{:,.0f}".format(o['price']) }} ريال</div>
           </a>
           {% endfor %}
+          {% if p['remaining_stores_count'] > 0 %}
+          <a class="more-stores-link" href="{{ url_for('product_detail', product_id=p['id']) }}">
+            + {{ p['remaining_stores_count'] }} متاجر أخرى
+          </a>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -97,6 +111,14 @@
     }
 
     searchInput.addEventListener('input', applyFilters);
+
+    // لو المستخدم جا من صفحة منتج ببحث جاهز بالرابط، نعبيه تلقائيًا
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialQuery = urlParams.get('q');
+    if (initialQuery) {
+      searchInput.value = initialQuery;
+      applyFilters();
+    }
 
     chips.forEach(chip => {
       chip.addEventListener('click', () => {
